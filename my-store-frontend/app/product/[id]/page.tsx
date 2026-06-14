@@ -86,10 +86,8 @@ const ProductRecommendations = ({
       try { currentData = JSON.parse(cartData); } catch (error) { console.error('❌ خطأ في قراءة السلة:', error); }
     }
 
-    const currentItems = currentData.state.items || [];
-    const existingIndex = currentItems.findIndex(item => 
-      item.product && item.product.id === productData.id
-    );
+    const currentItems: any[] = (currentData.state.items as any[]) || [];
+    const existingIndex = currentItems.findIndex((item: any) => item.product && item.product.id === productData.id);
     const productName = productData.Name || 'المنتج';
 
     if (existingIndex !== -1) {
