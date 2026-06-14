@@ -116,7 +116,7 @@ const ProductSection = ({ products, categories }: ProductSectionProps) => {
             }
         }
         
-        const currentItems = currentData.state.items || [];
+       const currentItems: any[] = (currentData.state.items as any[]) || [];
 const existingIndex = currentItems.findIndex((item: any) => 
     item?.product?.id === productData.id
 );
