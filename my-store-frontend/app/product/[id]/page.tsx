@@ -485,7 +485,7 @@ export default function ProductPage() {
             itemData.Images.forEach((img: StrapiImage) => {
               if (img.url) {
                 const imageUrl = `http://localhost:1337${img.url}`;
-                images.push({ id: img.id, url: imageUrl, ...img });
+                images.push({ ...img, url: imageUrl });
                 if (images.length === 1) mainImageUrl = imageUrl;
               }
             });
