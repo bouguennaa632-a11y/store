@@ -124,8 +124,8 @@ const existingIndex = currentItems.findIndex((item: any) =>
         const productName = productData.Name || 'المنتج';
         
         if (existingIndex !== -1) {
-            const currentQuantity = currentItems[existingIndex].product.quantity || 1;
-            currentItems[existingIndex].product.quantity = currentQuantity + 1;
+            const currentQuantity = (currentItems[existingIndex] as any).product?.quantity || 1;
+(currentItems[existingIndex] as any).product.quantity = currentQuantity + 1;
         } else {
             currentItems.push({
                 product: {
