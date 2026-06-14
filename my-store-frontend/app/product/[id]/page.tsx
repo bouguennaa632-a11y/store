@@ -317,7 +317,7 @@ export default function ProductPage() {
   const isStock = inventory > 0;
 
   // دالة إضافة المنتج إلى السلة
-  const addToCart = (product: Product) => {
+ const addToCart = (product: Product) => {
     if (!isStock) {
       alert(`⚠️ عذرًا، المنتج "${product.Name}" غير متوفر في المخزون حالياً`);
       return;
@@ -332,15 +332,16 @@ export default function ProductPage() {
       try { currentData = JSON.parse(cartData); } catch (error) { console.error('❌ خطأ في قراءة السلة:', error); }
     }
 
-    const currentItems = currentData.state.items || [];
-    const existingIndex = currentItems.findIndex(item => item.product && item.product.id === product.id);
+    // ✅ التعديل هنا: تحويل currentItems إلى any[]
+    const currentItems: any[] = (currentData.state.items as any[]) || [];
+    const existingIndex = currentItems.findIndex((item: any) => item.product && item.product.id === product.id);
     const productName = product.Name || 'المنتج';
 
     if (existingIndex !== -1) {
-      const currentQuantity = currentItems[existingIndex].product.quantity || 1;
-      currentItems[existingIndex].product.quantity = currentQuantity + quantity;
-      if (imageId && !currentItems[existingIndex].product.imageId) {
-        currentItems[existingIndex].product.imageId = imageId;
+      const currentQuantity = (currentItems[existingIndex] as any).product.quantity || 1;
+      (currentItems[existingIndex] as any).product.quantity = currentQuantity + quantity;
+      if (imageId && !(currentItems[existingIndex] as any).product.imageId) {
+        (currentItems[existingIndex] as any).product.imageId = imageId;
       }
     } else {
       currentItems.push({
