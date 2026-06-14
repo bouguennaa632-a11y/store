@@ -117,9 +117,9 @@ const ProductSection = ({ products, categories }: ProductSectionProps) => {
         }
         
         const currentItems = currentData.state.items || [];
-        const existingIndex = currentItems.findIndex(item => 
-            item.product && item.product.id === productData.id
-        );
+const existingIndex = currentItems.findIndex((item: any) => 
+    item?.product?.id === productData.id
+);
         
         const productName = productData.Name || 'المنتج';
         
