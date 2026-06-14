@@ -100,7 +100,7 @@ export default async function Footer() {
               <span className="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-xl text-[#1c74e9]"><Phone size={20} /></span>
               {/* تعديل عرض أرقام الهاتف لتصبح عمودية إذا كان هناك عدة أرقام */}
               <div className="flex flex-col items-start" dir="ltr">
-                {social.phone.split(' ').map((number, idx) => (
+                {social.phone.split(' ').map((number: string, idx: number) => (
                   <span key={idx} className="font-medium text-lg text-gray-200">{number}</span>
                 ))}
               </div>
