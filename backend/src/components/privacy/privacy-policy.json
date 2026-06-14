@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_privacy_privacy_policies",
+  "info": {
+    "displayName": "privacy-policy"
+  },
+  "options": {},
+  "attributes": {
+    "sectionTitle": {
+      "type": "string"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "text",
+        "list",
+        "text_with_list"
+      ]
+    },
+    "listItems": {
+      "type": "component",
+      "component": "item.list-item",
+      "repeatable": true
+    },
+    "content": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

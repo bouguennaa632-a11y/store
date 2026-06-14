@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "states",
+  "info": {
+    "singularName": "state",
+    "pluralName": "states",
+    "displayName": "State"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string",
+      "required": true
+    },
+    "Home_Delivery_Price": {
+      "type": "decimal",
+      "required": true
+    },
+    "Office_Delivery_Price": {
+      "type": "decimal",
+      "required": true
+    }
+  }
+}

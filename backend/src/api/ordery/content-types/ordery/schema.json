@@ -1,0 +1,67 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orderies",
+  "info": {
+    "singularName": "ordery",
+    "pluralName": "orderies",
+    "displayName": "ordery"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fullName": {
+      "type": "string"
+    },
+    "phoneNumber": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "fullAddress": {
+      "type": "text"
+    },
+    "shippingMethod": {
+      "type": "enumeration",
+      "enum": [
+        "office_delivery",
+        "home_delivery"
+      ]
+    },
+    "shippingPrice": {
+      "type": "decimal"
+    },
+    "orderDate": {
+      "type": "datetime"
+    },
+    "total": {
+      "type": "decimal"
+    },
+    "statuis": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "processing",
+        "shipped",
+        "delivered",
+        "cancelled"
+      ]
+    },
+    "orderItems": {
+      "type": "component",
+      "component": "order.order-item",
+      "repeatable": true
+    },
+    "ordernumber": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "note": {
+      "type": "text"
+    }
+  }
+}

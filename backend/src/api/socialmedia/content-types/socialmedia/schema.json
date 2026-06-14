@@ -1,0 +1,36 @@
+{
+  "kind": "singleType",
+  "collectionName": "socialmedias",
+  "info": {
+    "singularName": "socialmedia",
+    "pluralName": "socialmedias",
+    "displayName": "Socialmedia"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Facebook": {
+      "type": "string"
+    },
+    "Instagram": {
+      "type": "string"
+    },
+    "TikTok": {
+      "type": "string"
+    },
+    "WhatsApp": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    }
+  }
+}
