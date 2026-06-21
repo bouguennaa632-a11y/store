@@ -475,90 +475,98 @@ export default function ProductPage() {
   // جلب المنتج الحالي
   useEffect(() => {
     const loadProduct = async () => {
-      try {
-        const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-        const response = await fetch(`${apiUrl}/api/items/${productId}?populate=*`);
-        if (response.ok) {
-          const data = await response.json();
-          let itemData = data.data?.attributes || data.data || data;
-          let images: any[] = [];
-          let mainImageUrl = '';
-          if (itemData.Images && Array.isArray(itemData.Images) && itemData.Images.length > 0) {
-            itemData.Images.forEach((img: StrapiImage) => {
-              if (img.url) {
-                const imageUrl = `${apiUrl}${img.url}`;
-                images.push({ ...img, url: imageUrl });
-                if (images.length === 1) mainImageUrl = imageUrl;
-              }
-            });
-          }
-          if (images.length === 0) {
-            const encodedName = encodeURIComponent(itemData.Name || 'منتج');
-            mainImageUrl = `https://placehold.co/600x600/3b82f6/ec4899?text=${encodedName}`;
-            images = [{ url: mainImageUrl }];
-          }
-          let category = '';
-          if (itemData.categories && Array.isArray(itemData.categories) && itemData.categories.length > 0) {
-            category = itemData.categories[0]?.Name || '';
-          }
-          const id = itemData.documentId || itemData.id?.toString() || productId;
-          const formattedProduct: Product = {
-            id: id,
-            Name: itemData.Name || 'منتج بدون اسم',
-            Price: itemData.Price || 0,
-            Image: mainImageUrl,
-            Images: images,
-            Description: itemData.Description || '',
-            category: category,
-            Inventory: itemData.Inventory || 0
-          };
-          setProduct(formattedProduct);
-          setAllImages(images.map(img => img.url));
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+    
+    // المحاولة الأولى: باستخدام المعرف كما هو (documentId أو رقمي)
+    let response = await fetch(`${apiUrl}/api/items/${productId}?populate=*`);
+    
+    // إذا فشل وكان المعرف رقماً، حاول مرة أخرى باستخدام الرقمي
+    if (!response.ok && !isNaN(Number(productId))) {
+      console.log('محاولة جلب المنتج باستخدام id الرقمي:', productId);
+      response = await fetch(`${apiUrl}/api/items/${Number(productId)}?populate=*`);
+    }
 
-          // حفظ معرف المنتج (للاستخدام الاختياري)
-          const productIdToSave = formattedProduct.documentId || formattedProduct.id;
-          localStorage.setItem('checkout-product-id', productIdToSave);
-          localStorage.setItem('checkout-product-data', JSON.stringify({
-            id: productIdToSave,
-            Name: formattedProduct.Name,
-            Price: formattedProduct.Price,
-            Image: formattedProduct.Image,
-            Description: formattedProduct.Description,
-            Inventory: formattedProduct.Inventory
-          }));
-        } else {
-          // منتج تجريبي
-          const testProduct: Product = {
-            id: productId,
-            Name: 'كرسي',
-            Price: 7600,
-            Image: 'https://placehold.co/600x600/3b82f6/ec4899?text=كرسي',
-            Images: [{ url: 'https://placehold.co/600x600/3b82f6/ec4899?text=كرسي' }],
-            Description: 'كرسي مريح وعصري',
-            category: 'أثاث',
-            Inventory: 0
-          };
-          setProduct(testProduct);
-          setAllImages(['https://placehold.co/600x600/3b82f6/ec4899?text=كرسي']);
-        }
-      } catch (error) {
-        console.error('❌ خطأ في جلب المنتج:', error);
-        const defaultProduct: Product = {
-          id: productId,
-          Name: 'منتج تجريبي',
-          Price: 5000,
-          Image: `https://placehold.co/600x600/3b82f6/ec4899?text=منتج+${productId}`,
-          Images: [{ url: `https://placehold.co/600x600/3b82f6/ec4899?text=منتج+${productId}` }],
-          Description: 'وصف تجريبي للمنتج',
-          category: 'تجريبي',
-          Inventory: 10
-        };
-        setProduct(defaultProduct);
-        setAllImages([`https://placehold.co/600x600/3b82f6/ec4899?text=منتج+${productId}`]);
-      } finally {
-        setLoading(false);
+    if (response.ok) {
+      const data = await response.json();
+      let itemData = data.data?.attributes || data.data || data;
+      let images: any[] = [];
+      let mainImageUrl = '';
+      if (itemData.Images && Array.isArray(itemData.Images) && itemData.Images.length > 0) {
+        itemData.Images.forEach((img: StrapiImage) => {
+          if (img.url) {
+            const imageUrl = `${apiUrl}${img.url}`;
+            images.push({ ...img, url: imageUrl });
+            if (images.length === 1) mainImageUrl = imageUrl;
+          }
+        });
       }
+      if (images.length === 0) {
+        const encodedName = encodeURIComponent(itemData.Name || 'منتج');
+        mainImageUrl = `https://placehold.co/600x600/3b82f6/ec4899?text=${encodedName}`;
+        images = [{ url: mainImageUrl }];
+      }
+      let category = '';
+      if (itemData.categories && Array.isArray(itemData.categories) && itemData.categories.length > 0) {
+        category = itemData.categories[0]?.Name || '';
+      }
+      const id = itemData.documentId || itemData.id?.toString() || productId;
+      const formattedProduct: Product = {
+        id: id,
+        Name: itemData.Name || 'منتج بدون اسم',
+        Price: itemData.Price || 0,
+        Image: mainImageUrl,
+        Images: images,
+        Description: itemData.Description || '',
+        category: category,
+        Inventory: itemData.Inventory || 0
+      };
+      setProduct(formattedProduct);
+      setAllImages(images.map(img => img.url));
+
+      const productIdToSave = formattedProduct.documentId || formattedProduct.id;
+      localStorage.setItem('checkout-product-id', productIdToSave);
+      localStorage.setItem('checkout-product-data', JSON.stringify({
+        id: productIdToSave,
+        Name: formattedProduct.Name,
+        Price: formattedProduct.Price,
+        Image: formattedProduct.Image,
+        Description: formattedProduct.Description,
+        Inventory: formattedProduct.Inventory
+      }));
+    } else {
+      // منتج تجريبي
+      const testProduct: Product = {
+        id: productId,
+        Name: 'كرسي',
+        Price: 7600,
+        Image: 'https://placehold.co/600x600/3b82f6/ec4899?text=كرسي',
+        Images: [{ url: 'https://placehold.co/600x600/3b82f6/ec4899?text=كرسي' }],
+        Description: 'كرسي مريح وعصري',
+        category: 'أثاث',
+        Inventory: 0
+      };
+      setProduct(testProduct);
+      setAllImages(['https://placehold.co/600x600/3b82f6/ec4899?text=كرسي']);
+    }
+  } catch (error) {
+    console.error('❌ خطأ في جلب المنتج:', error);
+    const defaultProduct: Product = {
+      id: productId,
+      Name: 'منتج تجريبي',
+      Price: 5000,
+      Image: `https://placehold.co/600x600/3b82f6/ec4899?text=منتج+${productId}`,
+      Images: [{ url: `https://placehold.co/600x600/3b82f6/ec4899?text=منتج+${productId}` }],
+      Description: 'وصف تجريبي للمنتج',
+      category: 'تجريبي',
+      Inventory: 10
     };
+    setProduct(defaultProduct);
+    setAllImages([`https://placehold.co/600x600/3b82f6/ec4899?text=منتج+${productId}`]);
+  } finally {
+    setLoading(false);
+  }
+};
     loadProduct();
     fetchAllProducts();
   }, [productId]);
