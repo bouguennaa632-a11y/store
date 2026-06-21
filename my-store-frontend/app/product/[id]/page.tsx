@@ -479,10 +479,10 @@ export default function ProductPage() {
     const loadProduct = async () => {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-    
+     console.log('🔍 محاولة جلب المنتج من:', `${apiUrl}/api/items/${productId}?populate=*`);
     // المحاولة الأولى: باستخدام المعرف كما هو (documentId أو رقمي)
     let response = await fetch(`${apiUrl}/api/items/${productId}?populate=*`);
-    
+    console.log('📡 حالة الاستجابة:', response.status, response.statusText);
     // إذا فشل وكان المعرف رقماً، حاول مرة أخرى باستخدام الرقمي
     if (!response.ok && !isNaN(Number(productId))) {
       console.log('محاولة جلب المنتج باستخدام id الرقمي:', productId);
