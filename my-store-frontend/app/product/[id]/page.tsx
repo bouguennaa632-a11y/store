@@ -417,7 +417,8 @@ export default function ProductPage() {
   // جلب جميع المنتجات للمقترحات
   const fetchAllProducts = async () => {
     try {
-      const response = await fetch('http://localhost:1337/api/items?populate=*');
+      const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+      const response = await fetch(`${apiUrl}/api/items?populate=*`);
       if (response.ok) {
         const data = await response.json();
         const products = (data.data || []).map((item: any) => {
@@ -427,7 +428,7 @@ export default function ProductPage() {
           if (itemData.Images && Array.isArray(itemData.Images) && itemData.Images.length > 0) {
             itemData.Images.forEach((img: StrapiImage) => {
               if (img.url) {
-                const imageUrl = `http://localhost:1337${img.url}`;
+                const imageUrl = `${apiUrl}${img.url}`;
                 images.push({ ...img, url: imageUrl });
                 if (images.length === 1) mainImageUrl = imageUrl;
               }
@@ -475,7 +476,8 @@ export default function ProductPage() {
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:1337/api/items/${productId}?populate=*`);
+        const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+        const response = await fetch(`${apiUrl}/api/items/${productId}?populate=*`);
         if (response.ok) {
           const data = await response.json();
           let itemData = data.data?.attributes || data.data || data;
@@ -484,7 +486,7 @@ export default function ProductPage() {
           if (itemData.Images && Array.isArray(itemData.Images) && itemData.Images.length > 0) {
             itemData.Images.forEach((img: StrapiImage) => {
               if (img.url) {
-                const imageUrl = `http://localhost:1337${img.url}`;
+                const imageUrl = `${apiUrl}${img.url}`;
                 images.push({ ...img, url: imageUrl });
                 if (images.length === 1) mainImageUrl = imageUrl;
               }
@@ -564,7 +566,10 @@ export default function ProductPage() {
   const getStrapiImageUrl = (imagePath: string): string => {
     if (!imagePath) return '';
     if (imagePath.startsWith('http')) return imagePath;
-    if (imagePath.startsWith('/')) return `http://localhost:1337${imagePath}`;
+    if (imagePath.startsWith('/')) {
+    const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+    return `${apiUrl}${imagePath}`;
+}
     return imagePath;
   };
 
