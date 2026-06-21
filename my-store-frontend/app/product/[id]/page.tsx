@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { FaExpand, FaChevronLeft, FaChevronRight, FaPause, FaPlay } from 'react-icons/fa';
 import useEmblaCarousel from 'embla-carousel-react';
 <div style={{ background: 'yellow', padding: '10px', margin: '10px', direction: 'ltr' }}>
-  API URL: {process.env.NEXT_PUBLIC_STRAPI_URL || 'NOT SET'}
+  API URL: {process.env.NEXT_PUBLIC_STRAPI_URL || 'NOT SET'} 
 </div>
 // ==================== دالة استخراج imageId ====================
 const getImageId = (product: any): number | null => {
