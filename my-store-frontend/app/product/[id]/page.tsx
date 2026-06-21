@@ -481,7 +481,7 @@ export default function ProductPage() {
   useEffect(() => {
     const loadProduct = async () => {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+    const apiUrl = 'https://appealing-star-98278c85a1.strapiapp.com';
      console.log('🔍 محاولة جلب المنتج من:', `${apiUrl}/api/items/${productId}?populate=*`);
     // المحاولة الأولى: باستخدام المعرف كما هو (documentId أو رقمي)
     let response = await fetch(`${apiUrl}/api/items/${productId}?populate=*`);
