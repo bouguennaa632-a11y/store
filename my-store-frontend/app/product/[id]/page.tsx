@@ -126,14 +126,17 @@ const ProductRecommendations = ({
   if (recommendedProducts.length === 0) return null;
 
   const getStrapiImageUrl = (imagePath: string, productName: string): string => {
-    if (!imagePath) {
-      const encodedName = encodeURIComponent(productName.substring(0, 10));
-      return `https://placehold.co/600x600/3b82f6/ec4899?text=${encodedName}`;
-    }
-    if (imagePath.startsWith('http')) return imagePath;
-    if (imagePath.startsWith('/')) return `http://localhost:1337${imagePath}`;
-    return imagePath;
-  };
+  if (!imagePath) {
+    const encodedName = encodeURIComponent(productName.substring(0, 10));
+    return `https://placehold.co/600x600/3b82f6/ec4899?text=${encodedName}`;
+  }
+  if (imagePath.startsWith('http')) return imagePath;
+  if (imagePath.startsWith('/')) {
+    const apiUrl = 'https://appealing-star-98278c85a1.strapiapp.com'; // ✅ الرابط السحابي
+    return `${apiUrl}${imagePath}`;
+  }
+  return imagePath;
+};
 
   return (
     <div className="mt-16 md:mt-24 py-8 border-t border-gray-100" dir="rtl">
