@@ -603,6 +603,9 @@ export default function ProductPage() {
   }
 
   if (!product) {
+    <div style={{ background: 'yellow', padding: '10px', margin: '10px', direction: 'ltr', color: 'black' }}>
+  API URL: {process.env.NEXT_PUBLIC_STRAPI_URL || 'NOT SET'}
+</div>
     return (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-pink-50 py-12">
         <div className="container mx-auto px-4 text-center">
