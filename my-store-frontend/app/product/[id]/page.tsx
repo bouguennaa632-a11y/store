@@ -422,7 +422,7 @@ export default function ProductPage() {
   // جلب جميع المنتجات للمقترحات
   const fetchAllProducts = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+      const apiUrl = 'https://appealing-star-98278c85a1.strapiapp.com';
       const response = await fetch(`${apiUrl}/api/items?populate=*`);
       if (response.ok) {
         const data = await response.json();
